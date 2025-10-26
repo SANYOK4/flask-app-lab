@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<section>
+    <h1>Про себе</h1>
+    <p>Я — студент, який вивчає веброзробку і Python/Flask.</p>
+    <img src="{{ url_for('static', filename='images/photo.jpg') }}" alt="Фото" width="200">
+</section>
+
+<section>
+    <h2>Освіта</h2>
+    <p>Національний університет...</p>
+</section>
+
+<section>
+    <h2>Навички</h2>
+    <ul>
+        <li>Python</li>
+        <li>Flask</li>
+        <li>HTML, CSS, Bootstrap</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Проекти</h2>
+    <p>Мій перший Flask-сайт.</p>
+</section>
+{% endblock %}
