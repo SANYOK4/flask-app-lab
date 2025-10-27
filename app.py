@@ -13,7 +13,7 @@ def contact():
         email = request.form['email']
         message = request.form['message']
         return f"<h2>Дякую, {name}! Ваше повідомлення отримано.</h2>"
-    return render_template('contact.html', title='Контакти')
+    return render_template('contacts.html', title='Контакти')
 
 if __name__ == '__main__':
     app.run(debug=True)
