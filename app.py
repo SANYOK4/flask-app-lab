@@ -6,7 +6,7 @@ app = Flask(__name__)
 def resume():
     return render_template('resume.html', title='Моє резюме')
 
-@app.route('/contact', methods=['GET', 'POST'])
+@app.route('/contacts', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
         name = request.form['name']
