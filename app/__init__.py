@@ -1,10 +1,10 @@
 from flask import Flask
-# 1. Спочатку ніяких імпортів views тут не повинно бути!
+
+from .users.views import users_bp
+from .products.views import products_bp
 
 app = Flask(__name__)
-app.config.from_object('config') # Або app.config.from_pyfile('../config.py')
-
-# 2. Тільки ПІСЛЯ створення app ми імпортуємо та реєструємо блюпринти
-from .users.views import users_bp
+app.config.from_object('config')
 
 app.register_blueprint(users_bp, url_prefix='/users')
+app.register_blueprint(products_bp, url_prefix='/products')

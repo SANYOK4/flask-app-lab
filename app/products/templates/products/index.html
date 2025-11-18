@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Products Page{% endblock %}
+
+{% block content %}
+  <h2>Our Products</h2>
+  <ul>
+      {% for item in products %}
+          <li>{{ item }}</li>
+      {% endfor %}
+  </ul>
+  
+  <p><a href="{{ url_for('users.greetings', name='Guest') }}">Go to Users</a></p>
+{% endblock %}

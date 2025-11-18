@@ -1,6 +1,5 @@
 import unittest
-# Додаємо шлях до папки проекту, щоб Python бачив пакет app,
-# або просто запускаємо тест з кореневої папки командою python -m unittest ...
+
 from app import app 
 
 class FlaskAppTestCase(unittest.TestCase):
@@ -12,7 +11,7 @@ class FlaskAppTestCase(unittest.TestCase):
 
     def test_greetings_page(self):
         """Тест маршруту /users/hi/<name>"""
-        # Додаємо префікс /users, бо ми зареєстрували блюпринт з ним!
+        
         response = self.client.get("/users/hi/John?age=30") 
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"JOHN", response.data)
