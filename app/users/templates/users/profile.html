@@ -1,12 +1,69 @@
 {% extends 'base.html' %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}User Profile{% endblock %}
 
 {% block content %}
-    <h2>Welcome to your profile!</h2>
-    <p>Hello, <strong>{{ username }}</strong>!</p>
+<div style="max-width: 800px; margin: 0 auto;">
     
-    <a href="{{ url_for('users.logout') }}">
-        <button>Logout</button>
-    </a>
+    <div style="background-color: #007bff; color: white; padding: 15px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center;">
+        <h2>Ласкаво просимо, {{ username }}!</h2>
+        <a href="{{ url_for('users.logout') }}" style="color: white; border: 1px solid white; padding: 5px 10px; text-decoration: none; border-radius: 3px;">Вийти</a>
+    </div>
+
+    <br>
+
+    <h3>Додати кукі:</h3>
+    <form action="{{ url_for('users.add_cookie') }}" method="post" style="border: 1px solid #ddd; padding: 15px; border-radius: 5px;">
+        <label>Ключ (назва):</label>
+        <input type="text" name="key" required>
+        
+        <label>Значення:</label>
+        <input type="text" name="value" required>
+        
+        <label>Термін дії (сек):</label>
+        <input type="number" name="age" value="3600" required>
+        
+        <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 5px 10px; cursor: pointer;">Додати</button>
+    </form>
+
+    <br>
+
+    <h3>Видалити кукі за ключем:</h3>
+    <form action="{{ url_for('users.delete_cookie') }}" method="post" style="border: 1px solid #ddd; padding: 15px; border-radius: 5px;">
+        <label>Ключ для видалення:</label>
+        <input type="text" name="key" required>
+        <button type="submit" style="background-color: #ffc107; border: none; padding: 5px 10px; cursor: pointer;">Видалити</button>
+    </form>
+
+    <br>
+
+    <form action="{{ url_for('users.delete_all_cookies') }}" method="post">
+        <button type="submit" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; cursor: pointer;">Видалити Всі Куки</button>
+    </form>
+
+    <br><hr><br>
+
+    <h3>Список поточних кук:</h3>
+    <table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse;">
+        <thead style="background-color: #f2f2f2;">
+            <tr>
+                <th>Ключ</th>
+                <th>Значення</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, value in cookies.items() %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="2" style="text-align: center;">Куки відсутні</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
 {% endblock %}
