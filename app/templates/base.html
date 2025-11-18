@@ -8,8 +8,21 @@
 <body>
     <header>
         <h1>Flask Application</h1>
+        <nav>
+            <a href="{{ url_for('users.login') }}">Login</a> | 
+            <a href="{{ url_for('users.profile') }}">Profile</a>
+        </nav>
     </header>
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class=flashes>
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
     </main>
 </body>
