@@ -5,14 +5,15 @@
     <title>{% block title %}My App{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="{{ 'dark-theme' if request.cookies.get('theme') == 'dark' else '' }}">
     <header>
-        <h1>Flask Application</h1>
         <nav>
             <a href="{{ url_for('users.login') }}">Login</a> | 
-            <a href="{{ url_for('users.profile') }}">Profile</a>
+            <a href="{{ url_for('users.profile') }}">Profile</a> |
+            <a href="{{ url_for('products.get_products') }}">Products</a>
         </nav>
     </header>
+
     <main>
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
@@ -23,6 +24,7 @@
             </ul>
           {% endif %}
         {% endwith %}
+
         {% block content %}{% endblock %}
     </main>
 </body>

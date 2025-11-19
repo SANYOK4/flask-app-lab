@@ -9,6 +9,16 @@
         <h2>Ласкаво просимо, {{ username }}!</h2>
         <a href="{{ url_for('users.logout') }}" style="color: white; border: 1px solid white; padding: 5px 10px; text-decoration: none; border-radius: 3px;">Вийти</a>
     </div>
+    
+    <div style="text-align: right; margin-bottom: 20px;">
+        <span>Оберіть тему: </span>
+        <a href="{{ url_for('users.set_theme', theme_name='light') }}">
+            <button style="background: #fff; color: #000; border: 1px solid #000;">Світла</button>
+        </a>
+        <a href="{{ url_for('users.set_theme', theme_name='dark') }}">
+            <button style="background: #333; color: #fff; border: 1px solid #fff;">Темна</button>
+        </a>
+    </div>
 
     <br>
 

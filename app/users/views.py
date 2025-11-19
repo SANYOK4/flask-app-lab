@@ -78,3 +78,13 @@ def logout():
     session.pop("username", None)
     flash("Ви вийшли з системи", "info")
     return redirect(url_for("users.login"))
+
+@users_bp.route("/set_theme/<string:theme_name>")
+def set_theme(theme_name):
+    resp = make_response(redirect(request.referrer or url_for('users.profile')))
+    
+    if theme_name in ['dark', 'light']:
+        resp.set_cookie('theme', theme_name, max_age=30*24*60*60)
+        flash(f"Тему змінено на {theme_name}", "success")
+    
+    return resp
