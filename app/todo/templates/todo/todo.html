@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Todo List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Todo List</h2>
+    
+    <form method="POST" class="mb-4">
+        {{ form.csrf_token }}
+        <div class="input-group">
+            {{ form.title(class="form-control", placeholder="Enter task...") }}
+            <button class="btn btn-primary" type="submit">Add</button>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in todos %}
+            <tr>
+                <td>{{ todo.id }}</td>
+                <td>{{ todo.title }}</td>
+                <td>
+                    {% if todo.status %}
+                        <span class="badge bg-success">Complete</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">Active</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('todo.update', id=todo.id) }}" class="btn btn-sm btn-info">
+                        {{ 'Undo' if todo.status else 'Complete' }}
+                    </a>
+                    <a href="{{ url_for('todo.delete', id=todo.id) }}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
