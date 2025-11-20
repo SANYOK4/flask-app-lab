@@ -1,0 +1,18 @@
+{% macro render_field(field) %}
+  <div class="form-group">
+    {{ field.label(class="form-label") }}
+    
+    {# Виводимо саме поле, додаємо клас bootstrap, якщо треба #}
+    {{ field(class="form-control", **kwargs)|safe }}
+    
+    {# Виводимо помилки, якщо вони є #}
+    {% if field.errors %}
+      <ul class="text-danger">
+        {% for error in field.errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+  <br>
+{% endmacro %}

@@ -1,23 +1,20 @@
 {% extends 'base.html' %}
 {% from "_form_helpers.html" import render_field %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Contact Us{% endblock %}
 
 {% block content %}
-    <h2>Login Page (WTF)</h2>
+    <h2>Contact Form</h2>
     
     <form method="post" novalidate>
         {{ form.csrf_token }}
         
+        {{ render_field(form.name) }}
         {{ render_field(form.email) }}
-        {{ render_field(form.password) }}
+        {{ render_field(form.phone) }}
+        {{ render_field(form.subject) }}
+        {{ render_field(form.message) }}
         
-        <div class="form-check">
-            {{ form.remember() }} {{ form.remember.label }}
-        </div>
-        <br>
         {{ form.submit() }}
     </form>
-    
-    <p>Hint: user@example.com / pass123</p>
 {% endblock %}
