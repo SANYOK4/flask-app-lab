@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% from "_form_helpers.html" import render_field %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2>{{ title }}</h2>
+
+<form method="POST">
+    {{ form.csrf_token }}
+    {{ render_field(form.title) }}
+    {{ render_field(form.text) }}
+    {{ render_field(form.type) }}
+    
+    <div class="form-check mb-3">
+        {{ form.enabled(class="form-check-input") }}
+        {{ form.enabled.label(class="form-check-label") }}
+    </div>
+    
+    {{ form.submit(class="btn btn-success") }}
+    <a href="{{ url_for('posts.index') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
