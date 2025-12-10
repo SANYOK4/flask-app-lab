@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Мої Оцінки</h2>
+
+<form method="GET" class="mb-3">
+    <input type="text" name="q" placeholder="Предмет або коментар..." value="{{ search_query }}">
+    <button type="submit" class="btn btn-primary">Пошук</button>
+</form>
+
+<div class="mb-3">
+    Сортувати: 
+    <a href="{{ url_for('grades.list_grades', sort='date') }}">За датою</a> | 
+    <a href="{{ url_for('grades.list_grades', sort='value') }}">За балом</a>
+</div>
+
+<a href="{{ url_for('grades.create_grade') }}" class="btn btn-success mb-3">Додати оцінку</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Предмет</th>
+            <th>Бал</th>
+            <th>Коментар</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for grade in grades %}
+        <tr>
+            <td>{{ grade.subject.name }}</td>
+            <td>{{ grade.value }}</td>
+            <td>{{ grade.comment }}</td>
+            <td>
+                <a href="{{ url_for('grades.update_grade', grade_id=grade.id) }}" class="btn btn-sm btn-info">Edit</a>
+                <form action="{{ url_for('grades.delete_grade', grade_id=grade.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

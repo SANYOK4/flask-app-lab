@@ -1,38 +1,49 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, Regexp
+from flask_login import current_user
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from app.users.models import User
+
+class RegistrationForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Sign Up')
+
+    # Перевірка: чи існує вже такий юзернейм
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('Це ім\'я вже зайняте. Оберіть інше.')
+
+    # Перевірка: чи існує вже такий email
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('Цей email вже зареєстровано.')
+
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[
-        DataRequired(), 
-        Length(min=4, max=10, message="Пароль має бути від 4 до 10 символів")
-    ])
+    password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    submit = SubmitField('Login')
 
-class ContactForm(FlaskForm):
-    name = StringField('Name', validators=[
-        DataRequired(), 
-        Length(min=4, max=10, message="Ім'я має бути від 4 до 10 символів")
-    ])
+
+class UpdateAccountForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    
-    # Валідація телефону
-    phone = StringField('Phone', validators=[
-        DataRequired(),
-        Regexp(r'^\+380\d{9}$', message="Формат: +380xxxxxxxxx")
-    ])
-    
-    subject = SelectField('Subject', choices=[
-        ('bug', 'Report a Bug'),
-        ('feature', 'Feature Request'),
-        ('other', 'Other')
-    ])
-    
-    message = TextAreaField('Message', validators=[
-        DataRequired(),
-        Length(max=500, message="Повідомлення не більше 500 символів")
-    ])
-    
-    submit = SubmitField('Send')
+    submit = SubmitField('Update')
+
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError('Це ім\'я вже зайняте.')
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('Цей email вже зайняте.')

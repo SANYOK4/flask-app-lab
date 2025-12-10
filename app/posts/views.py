@@ -41,8 +41,6 @@ def update(id):
         flash("Пост оновлено!", "success")
         return redirect(url_for('posts.index'))
     
-    # --- ОСЬ ТУТ БУЛА ПОМИЛКА ---
-    # Ми перевіряємо, чи це GET запит (просто відкриття сторінки)
     if request.method == 'GET':
         form.title.data = post.title
         form.text.data = post.text
