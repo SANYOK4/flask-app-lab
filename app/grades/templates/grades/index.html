@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Grades{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Student Grades</h2>
+    <a href="{{ url_for('grades.create') }}" class="btn btn-success">Add New Grade</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Subject</th>
+            <th>Score</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for grade in grades %}
+        <tr>
+            <td>{{ grade.student_name }}</td>
+            <td><span class="badge bg-primary">{{ grade.subject.name }}</span></td>
+            <td>
+                {% if grade.score >= 90 %}
+                    <span class="text-success fw-bold">{{ grade.score }}</span>
+                {% elif grade.score < 60 %}
+                    <span class="text-danger fw-bold">{{ grade.score }}</span>
+                {% else %}
+                    {{ grade.score }}
+                {% endif %}
+            </td>
+            <td>{{ grade.date_created.strftime('%Y-%m-%d') }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4" class="text-center">Оцінок ще немає</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
