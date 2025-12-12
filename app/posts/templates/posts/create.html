@@ -8,11 +8,12 @@
 
 <form method="POST">
     {{ form.csrf_token }}
+    
     {{ render_field(form.title) }}
     {{ render_field(form.text) }}
     {{ render_field(form.type) }}
-    
-    <div class="form-check mb-3">
+
+    {{ render_field(form.author_id) }} {{ render_field(form.tags) }}      <div class="form-check mb-3">
         {{ form.enabled(class="form-check-input") }}
         {{ form.enabled.label(class="form-check-label") }}
     </div>

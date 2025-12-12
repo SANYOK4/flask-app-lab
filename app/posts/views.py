@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request # <--- Перевір, чи є тут request
+from flask import Blueprint, render_template, redirect, url_for, flash, request
 from app import db
-from .models import Post
+from app.models import Post, Tag
 from .forms import PostForm
 
 posts_bp = Blueprint('posts', __name__, template_folder='templates')
@@ -10,7 +10,7 @@ def index():
     posts = Post.query.order_by(Post.created.desc()).all()
     return render_template('posts/index.html', posts=posts)
 
-@posts_bp.route('/create', methods=['GET', 'POST'])
+@posts_bp.route('/new', methods=['GET', 'POST'])
 def create():
     form = PostForm()
     if form.validate_on_submit():
@@ -18,8 +18,15 @@ def create():
             title=form.title.data,
             text=form.text.data,
             type=form.type.data,
-            enabled=form.enabled.data
+            enabled=form.enabled.data,
+            user_id=form.author_id.data
         )
+        
+        for tag_id in form.tags.data:
+            tag = Tag.query.get(tag_id)
+            if tag:
+                post.tags.append(tag)
+
         db.session.add(post)
         db.session.commit()
         flash("Пост успішно створено!", "success")
@@ -37,18 +44,27 @@ def update(id):
         post.text = form.text.data
         post.type = form.type.data
         post.enabled = form.enabled.data
+        post.user_id = form.author_id.data
+        
+        post.tags = [] 
+        for tag_id in form.tags.data:
+            tag = Tag.query.get(tag_id)
+            if tag:
+                post.tags.append(tag)
+
         db.session.commit()
         flash("Пост оновлено!", "success")
         return redirect(url_for('posts.index'))
     
-    # --- ОСЬ ТУТ БУЛА ПОМИЛКА ---
-    # Ми перевіряємо, чи це GET запит (просто відкриття сторінки)
+
     if request.method == 'GET':
         form.title.data = post.title
         form.text.data = post.text
         form.type.data = post.type
         form.enabled.data = post.enabled
-    # ---------------------------
+        form.author_id.data = post.user_id
+        
+        form.tags.data = [tag.id for tag in post.tags] 
 
     return render_template('posts/create.html', form=form, title="Update Post")
 
